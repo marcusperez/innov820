@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js">
+    </script>
+
+    <script>
+        var crimeWaveMapMarkers = [];
+        var crimeWaveInfoWindows = [];
+
+        function generateQuickGuid() {
+            return Math.random().toString(36).substring(2, 15) +
+                Math.random().toString(36).substring(2, 15);
+        }
+
+        function getMapCenter(lat, lon) {
+            var myLatLon = new google.maps.LatLng(lat, lon);
+
+            var mapProp = {
+                center: myLatLon,
+                zoom: 5,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            return mapProp;
+        }
+
+        function getMap(elementId, mapCenter) {
+            var map = new google.maps.Map(document.getElementById(elementId), mapCenter);
+            return map;
+        }
+
+        function getMarker(lat, lon, iconFileName) {
+            var latLonPosition = new google.maps.LatLng(lat, lon);
+            var mi = getMarkerInfo(iconFileName);
+
+            var marker = new google.maps.Marker({
+                position: latLonPosition,
+                icon: iconFileName,
+                infoWindow: mi
+            });
+
+            return marker;
+        }
+
+        function infoWindowExists(infoWindow) {
+            return infoWindow.getPosition() != null;
+        }
+
+        function getMarkerInfo(content) {
+            var markerInfo = new google.maps.InfoWindow({
+                content: content
+            });
+
+            return markerInfo;
+        }
+
+        function getMapMarkers() {
+            var mapMarkerItem1 = {
+                lat: 30.3212992,
+                lon: -81.4991972,
+                iconFileName: 'Robbery.png',
+                markerInfo: 'Robbery',
+                markerObject: null
+            };
+
+            var mapMarkerItem2 = {
+                lat: 30.5026569,
+                lon: -81.6242448,
+                iconFileName: 'Pirates.png',
+                markerInfo: 'Pirates',
+                markerObject: null
+            };
+
+            var mapMarkers = [];
+            mapMarkers.push(mapMarkerItem1);
+            mapMarkers.push(mapMarkerItem2);
+
+            return mapMarkers;
+        }
+
+        function addMarkers(mapMarkers, map) {
+            for (var mapMarker in mapMarkers) {
+                var mapMarkerItem = mapMarkers[mapMarker];
+
+                var marker = getMarker(mapMarkerItem.lat, mapMarkerItem.lon, mapMarkerItem.iconFileName);
+                mapMarkerItem.markerObject = marker;
+
+                var markerInfo = getMarkerInfo(mapMarkerItem.markerInfo);
+                mapMarkerItem.infoWindowObject = markerInfo;
+
+                google.maps.event.addListener(mapMarkerItem.markerObject, 'click', function () {
+                    this.infoWindow.open(map, this);
+                });
+
+                marker.setMap(map);
+            }
+        }
+
+        function initialize() {
+            var lat = 30.3212992;
+            var lon = -81.4991972;
+
+            var mapCenter = getMapCenter(lat, lon);
+
+            var map = getMap("googleMap", mapCenter);
+
+            var mapMarkers = getMapMarkers();
+
+            addMarkers(mapMarkers, map);
+            
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+
+<body>
+    <div id="googleMap" style="width:500px;height:380px;"></div>
+</body>
+</html>
