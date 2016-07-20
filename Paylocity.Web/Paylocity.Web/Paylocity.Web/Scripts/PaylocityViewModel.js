@@ -3,49 +3,91 @@
 
     self.employees = ko.observableArray();
 
-    self.ApplyComputedObservables = function () {
-
+    self.employeeBenefitsCost = function () {
+        return $("#txtEmployeeBenefitsCost").val();
     };
 
-    self.AddEmployee = function () {
-        //alert('test');
-        var firstName = $("#txtFirstName").val();
-        var lastName = $("#txtLastName").val();
-        var benefitsCost = $("#txtEmployeeBenefitsCost").val();
+    self.dependentBenefitsCost = function () {
+        return $("#txtDependentBenefitsCost").val();
+    };
+    
+    self.discountLetter = function() {
+        return $("#txtDiscountLetter").val();
+    };
 
-        var personViewModel = new PersonViewModel(firstName, lastName, benefitsCost, null);
+    self.employeeSalaryPerCheck = function () {
+        return $("#txtEmployeeSalary").val();
+    };
+
+    self.discountAmount = function () {
+        return Number($("#txtDiscountAmount").val()) / 100;
+    };
+    
+    self.addEmployee = function () {
+        //alert('test');
+        var firstName = "";
+        var lastName = "";       
+        var parentPersonId = null;
+
+        var personViewModel = new PersonViewModel(firstName, lastName, self.employeeBenefitsCost(), parentPersonId, self.discountLetter(), self.discountAmount());
 
         self.employees.push(personViewModel);
     };
 
-    self.AddDependent = function () {
+    self.addDependent = function () {
         var parentPersonId = this.personId();
 
-        var person = new PersonViewModel("", "", $("#txtDependentBenefitsCost").val(), parentPersonId);
+        var person = new PersonViewModel("", "", self.dependentBenefitsCost(), parentPersonId, self.discountLetter(), self.discountAmount());
+
         this.dependents.push(person);
 
         self.employees.push(person);
     };
 
-    self.RemoveDependent = function () {
+    self.removeDependent = function () {
 
         var parentPersonId = this.parentPersonId();
         var personIdToRemove = this.personId();
         var indexToRemove = -1;
 
-        $.each(self.employees, function (index, value) {
-            $.each(value, function (index2, value2) {
-
-                if (value2.personId() === personIdToRemove) {
-                    indexToRemove = index2;
-                }
-
-            });
+        $.each(self.employees(), function (index, value) {
+            if (value.personId() === personIdToRemove) {
+                indexToRemove = index;
+            }
         });
 
         if (indexToRemove > -1) {
             self.employees.splice(indexToRemove, 1);
         }
-
     };
+
+    self.totalCost = ko.computed(function () {
+        var totalCost = self.employees().reduce(function (total, next) {
+            return total + next.priceWithDiscount();
+        }, 0);
+
+        return Number(totalCost);
+    });
+
+    self.annualCost = ko.computed(function () {
+        var totalCost = self.employees().reduce(function (total, next) {
+            return total + next.priceWithDiscount();
+        }, 0);
+
+        totalCost = totalCost * 26;
+        return Number(totalCost);
+    });
+
+    self.annualCostPercentage = ko.computed(function () {
+        var totalCost = self.employees().reduce(function (total, next) {
+            return total + next.priceWithDiscount();
+        }, 0);
+
+        return Number(totalCost);
+    });
+
+    self.annualSalary = ko.computed(function () {
+        return self.employeeSalaryPerCheck() * 26;
+    });
+
 }

@@ -1,4 +1,4 @@
-﻿function PersonViewModel(firstName, lastName, regularPrice, parentPersonId) {
+﻿function PersonViewModel(firstName, lastName, regularPrice, parentPersonId, discountLetter, discountAmount) {
 
     var self = this;
 
@@ -6,10 +6,13 @@
     this.firstName = ko.observable(firstName);
     this.lastName = ko.observable(lastName);
     this.regularPrice = ko.observable(regularPrice);
+    this.discountLetter = ko.observable(discountLetter);
+    this.discountAmount = ko.observable(discountAmount);
     this.applyDiscount = ko.computed(function () {
 
-        if (this.firstName() != null && this.firstName().toLowerCase().startsWith("a")) {
-            return 0.10;
+        //if (this.firstName() != null && this.firstName().toLowerCase().startsWith("a"))
+        if (this.firstName() != null && this.firstName().toLowerCase().startsWith(this.discountLetter().toLowerCase())) {
+            return this.discountAmount();
         } else {
             return 0;
         }

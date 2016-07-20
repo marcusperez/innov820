@@ -5,10 +5,18 @@ using System.Web.Mvc;
 
 namespace Paylocity.Web.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     public class HomeController : Controller
     {
+
+        [AllowAnonymous]
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Instructions()
         {
             return View();
         }

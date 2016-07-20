@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/PaylocityViewModel.js"></script>
+<script src="~/Scripts/PersonViewModel.js"></script>
+
+<br />
+<h3>Coding Challenge Overview:</h3>
+
+<br/>
+Each of our Paylocity product teams operates like a small startup, empowered to deliver business value in whatever way they see fit.   Because our teams are close knit and fast moving it is imperative that you are able to work collaboratively with your fellow developers.
+<br />
+<br />
+This coding challenge is designed to allow you to demonstrate your abilities and discuss your approach to design and implementation with your potential colleagues. 
+<br />
+<br />
+You are free to use whatever technologies you prefer but please be prepared to discuss the choices you’ve made.
+<br />
+<h3>Business Need:</h3>
+<br />
+One of the critical functions that we provide for our clients is the ability to pay for their employees’ benefits packages.  A portion of these costs are deducted from their paycheck, and we handle that deduction.  
+
+<br />
+<br />
+<h4>Please demonstrate how you would code the following scenario:</h4>
+<ul>
+    <li>The cost of benefits is $1000/year for each employee</li>
+    <li>Each dependent (children and possibly spouses) incurs a cost of $500/year</li>
+    <li>Anyone whose name starts with ‘A’ gets a 10% discount, employee or dependent</li>
+</ul>
+
+<br />
+We’d like to see this calculation used in a web application where employers input employees and their dependents, and get a preview of the costs.
+This is of course a contrived example.  We want to know how you would implement the application structure and calculations and get a brief preview of how you work.
+<br />
+<br />
+<h4>Please implement a web application based on these assumptions:</h4>
+<br />
+<ul>
+    <li>All employees are paid $2000 per paycheck before deductions</li>
+    <li>There are 26 paychecks in a year </li>
+</ul>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/paylocityScripts");
+
+<script>
+    
+    $(function () {
+        
+    });
+
+</script>
+    
+}
