@@ -1,0 +1,110 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/PaylocityViewModel.js"></script>
+<script src="~/Scripts/PersonViewModel.js"></script>
+
+<br />
+<h3>Settings</h3>
+<table>
+    <tr>
+        <td>Discount Letter (starts with)</td>
+        <td>&nbsp;</td>
+        <td><input type="text" id="txtDiscountLetter" value="A" /></td>
+    </tr>
+    <tr>
+        <td>Discount Amount</td>
+        <td>&nbsp;</td>
+        <td><input type="text" id="txtDiscountAmount" value="10" />%</td>
+    </tr>
+    <tr>
+        <td>Employee Salary Per Check</td>
+        <td>$</td>
+        <td><input type="text" id="txtEmployeeSalary" value="2000" /></td>
+    </tr>
+    <tr>
+        <td>Employee Benefits Cost</td>
+        <td>$</td>
+        <td><input type="text" id="txtEmployeeBenefitsCost" value="1000" /></td>
+    </tr>
+    <tr>
+        <td>Dependent Benefits Cost</td>
+        <td>$</td>
+        <td><input type="text" id="txtDependentBenefitsCost" value="500" /></td>
+    </tr>
+</table>
+
+<br />
+
+<table style="border-style: solid; border-width: thin;" cellpadding="5" id="tblAnalysis">
+    <thead>
+        <tr>
+            <td colspan="2"><h3>Benefits Cost Analysis</h3></td>
+            <td colspan="6" align="right"><input type="button" id="btnAddEmployee" value="Add Employee" data-bind="event: { click: AddEmployee }" /></td>
+        </tr>
+        <tr style="border-style: solid; border-width: thin;">
+            <td align="right">PersonId</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Regular Price</td>
+            <td align="right">Discount %</td>
+            <td>Price with Discount</td>
+            <td align="right">Parent PersonId</td>
+            <td align="right">Action</td>
+
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: employees">
+        <tr data-bind="visible: isDependent()">
+            <td colspan="8">Dependent</td>
+        </tr>
+        <tr data-bind="visible: !isDependent()">
+            <td style="font-weight:bold;" data-bind="text: 'Employee - Total Cost: ' + totalCost()" colspan="8"></td>
+        </tr>
+        <tr id="rowPerson">
+            <td data-bind="text: personId" align="right"></td>
+            <td>
+                <input type="text" data-bind="value: firstName, attr: { id: 'txtFirstName_' + personId()}" />
+            </td>
+            <td>
+                <input type="text" data-bind="value: lastName, attr: { id: 'txtLastName_' + personId()}" />
+            </td>
+            <td data-bind="text: regularPrice()" align="right"></td>
+            <td data-bind="text: applyDiscount() * 100" align="right"></td>
+            <td data-bind="text: priceWithDiscount()" align="right"></td>
+            <td data-bind="text: parentPersonId()" align="right"></td>
+            <td align="right">
+                <input type="button" data-bind="attr: { 'data-id': personId }, visible: parentPersonId() === null, event: {click: $parent.AddDependent}" value="Add Dependent" id="btnAddDependent" />
+                <input type="button" data-bind="attr: { 'data-id': personId }, visible: parentPersonId() != null, event: {click: $parent.RemoveDependent}" value="Remove Dependent" id="btnRemoveDependent" />
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/paylocityScripts");
+
+<script>
+    
+    $(function () {
+    
+        var viewModel = new PaylocityViewModel();
+
+        ko.applyBindings(viewModel);
+
+        //$("#btnAddEmployee").unbind("click").on("click", viewModel.AddEmployee);
+
+        window.viewModel = viewModel;
+
+    });
+
+
+
+    
+    
+
+</script>
+    
+}

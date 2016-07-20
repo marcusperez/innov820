@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.0-1/mocha.css" rel="stylesheet" />
+
+<div id="mocha"><p><a href=".">Index</a></p></div>
+<div id="messages"></div>
+<div id="fixtures"></div>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.0-1/mocha.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/should.js/9.0.2/should.js"></script>
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/paylocityScripts");
+
+    <script>
+        mocha.setup("bdd");
+    </script>
+    <script>
+        describe('Person', function () {
+            it('should calculate totalCost without dependent without discount', function () {
+                
+                var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null);
+                personViewModel.totalCost().should.equal(1000);
+            });
+        });
+
+        describe('Person', function () {
+            it('should calculate totalCost without dependent with discount', function () {
+
+                var personViewModel = new PersonViewModel("Animal", "House", 1000, null);
+                personViewModel.totalCost().should.equal(900);
+            });
+        });
+
+        describe('Person', function () {
+            it('should calculate totalCost with dependent without discount', function () {
+
+                var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null);
+                var dependentViewModel = new PersonViewModel("Grape", "Ape", 500, personViewModel.personId());
+                personViewModel.dependents.push(dependentViewModel);
+
+                personViewModel.totalCost().should.equal(1500);
+            });
+        });
+
+        describe('Person', function () {
+            it('should calculate totalCost with dependent with discount (Both)', function () {
+
+                var personViewModel = new PersonViewModel("Animal", "House", 1000, null);
+                var dependentViewModel = new PersonViewModel("Ape", "Grape", 500, personViewModel.personId());
+                personViewModel.dependents.push(dependentViewModel);
+
+                personViewModel.totalCost().should.equal(1350);
+            });
+        });
+
+        describe('Person', function () {
+            it('should calculate totalCost with dependent with discount (Dependent)', function () {
+
+                var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null);
+                var dependentViewModel = new PersonViewModel("Ape", "Grape", 500, personViewModel.personId());
+                personViewModel.dependents.push(dependentViewModel);
+
+                personViewModel.totalCost().should.equal(1450);
+            });
+        });
+
+    </script>
+    <script>
+        mocha.run();
+    </script>
+
+}
+
+
