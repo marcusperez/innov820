@@ -15,9 +15,14 @@
         return $("#txtDiscountLetter").val();
     };
 
-    self.employeeSalaryPerCheck = function () {
-        return $("#txtEmployeeSalary").val();
+    self.employeeSalaryPerCheckDummy = ko.observable();
+    self.notifyEmployeeSalaryPerCheck = function () {
+        self.employeeSalaryPerCheckDummy.notifySubscribers();
     };
+    self.employeeSalaryPerCheck = ko.computed(function () {
+        self.employeeSalaryPerCheckDummy();
+        return $("#txtEmployeeSalary").val();
+    }, this);
 
     self.discountAmount = function () {
         return Number($("#txtDiscountAmount").val()) / 100;
@@ -30,6 +35,8 @@
         var firstName = "";
         var lastName = "";       
         var parentPersonId = null;
+
+        self.notifyEmployeeSalaryPerCheck();
 
         var personViewModel = new PersonViewModel(firstName, lastName, self.employeeBenefitsCost(), parentPersonId, self.discountLetter(), self.discountAmount());
 
