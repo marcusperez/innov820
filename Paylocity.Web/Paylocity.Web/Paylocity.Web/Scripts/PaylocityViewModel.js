@@ -24,6 +24,8 @@
     };
     
     self.addEmployee = function () {
+        if (!$('#demo-form').parsley().validate()) return;
+
         //alert('test');
         var firstName = "";
         var lastName = "";       
@@ -71,7 +73,7 @@
             return total + next.priceWithDiscount();
         }, 0);
 
-        return Number(totalCost);
+        return Number(totalCost/26);
     });
 
     self.totalCostDisplay = ko.computed(function () {
@@ -80,11 +82,7 @@
     });
 
     self.annualCost = ko.computed(function () {
-        var totalCost = self.employees().reduce(function (total, next) {
-            return total + next.priceWithDiscount();
-        }, 0);
-
-        totalCost = totalCost * 26;
+        var totalCost = self.totalCost() * 26;
         return Number(totalCost);
     });
 

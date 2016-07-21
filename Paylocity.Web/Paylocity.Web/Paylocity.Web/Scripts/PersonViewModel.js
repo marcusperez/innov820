@@ -34,19 +34,4 @@
         return this.parentPersonId() != null;
     }, this);
     this.dependents = ko.observableArray();
-    this.totalCost = ko.computed(function () {
-        var dependentsCost = self.dependents().reduce(function (total, next) {
-            return total + next.priceWithDiscount();
-        }, 0);
-
-        return self.priceWithDiscount() + Number(dependentsCost);
-    });
-    this.totalCostDisplay = ko.computed(function () {
-        var dependentsCost = self.dependents().reduce(function (total, next) {
-            return total + next.priceWithDiscount();
-        }, 0);
-        var totalCost = self.priceWithDiscount() + Number(dependentsCost);
-        totalCost = formatCurrency(totalCost);
-        return totalCost;
-    });
 };

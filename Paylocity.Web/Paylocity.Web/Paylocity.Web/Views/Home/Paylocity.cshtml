@@ -4,124 +4,141 @@
 
 <style>
     .sectionHeader {
-        background-color:lightblue;
+        background-color: lightblue;
         padding: 5px;
         font-weight: bold;
+        border-radius: 5px;
     }
 </style>
 
-<h3 class="sectionHeader" style="padding: 5px;">Settings</h3>
+<div class="bs-callout bs-callout-warning hidden">
+    <h4>Oh snap!</h4>
+    <p>This form seems to be invalid :(</p>
+</div>
 
-<table>
-    <tr>
-        <td>Discount Letter (starts with)</td>
-        <td>&nbsp;</td>
-        <td><input type="text" id="txtDiscountLetter" value="A" /></td>
-    </tr>
-    <tr>
-        <td>Discount Amount %</td>
-        <td>&nbsp;</td>
-        <td><input type="text" id="txtDiscountAmount" value="10" /></td>
-    </tr>
-    <tr>
-        <td>Employee Salary Per Check</td>
-        <td>$</td>
-        <td><input type="text" id="txtEmployeeSalary" value="2000" /></td>
-    </tr>
-    <tr>
-        <td>Employee Benefits Cost</td>
-        <td>$</td>
-        <td><input type="text" id="txtEmployeeBenefitsCost" value="1000" /></td>
-    </tr>
-    <tr>
-        <td>Dependent Benefits Cost</td>
-        <td>$</td>
-        <td><input type="text" id="txtDependentBenefitsCost" value="500" /></td>
-    </tr>
-    <tr>
-        <td colspan="3" style="text-align: right;">
-            <input type="button" id="btnAddEmployee" value="Add Employee" data-bind="event: { click: addEmployee }, visible: employees().length === 0" />
-            @*<i class="fa fa-plus-circle fa-2x" aria-hidden="true">Add</i>*@
-            <input type="button" id="btnReset" value="New Employee" data-bind="event: { click: newEmployee }, visible: employees().length > 0" />
-        </td>
-    </tr>
-</table>
+<div class="bs-callout bs-callout-info hidden">
+    <h4>Yay!</h4>
+    <p>Everything seems to be ok :)</p>
+</div>
 
-<br />
-<h3 class="sectionHeader" style="padding: 5px;" data-bind="fadeVisible: employees().length > 0">Benefits Cost Analysis</h3>
-<table cellpadding="5" id="tblAnalysis" data-bind="fadeVisible: employees().length > 0">
-    <thead>
-        <tr style="border-style: solid; border-width: thin;">
-            <td align="right">PersonId</td>
-            <td>First Name</td>
-            <td>Last Name</td>
-            <td align="right">Regular Price</td>
-            <td align="right">Discount %</td>
-            <td align="right">Price with Discount</td>
-            <td align="right">Parent PersonId</td>
-            <td align="right">Action</td>
+<form id="demo-form" data-parsley-validate="">
 
-        </tr>
-    </thead>
-    <tfoot data-bind="fadeVisible: employees().length > 0">
-        <tr>
-            <td colspan="8">
-            <h3 class="sectionHeader">Summary</h3>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="5" style="font-weight:bold;">Current Paycheck:</td>
-            <td style="font-weight:bold;text-align: right;" data-bind="text: totalPaycheckDisplay()" colspan="1"></td>
-            <td colspan="2"></td>
-        </tr>
-        <tr>
-            <td colspan="5" style="font-weight:bold;">Total Cost/Paycheck:</td>
-            <td style="font-weight:bold;text-align: right;" data-bind="text: totalCostDisplay()" colspan="1"></td>
-            <td colspan="2"></td>
-        </tr>
-        <tr>
-            <td colspan="5" style="font-weight:bold;">Annual Salary:</td>
-            <td style="font-weight:bold;text-align: right;" data-bind="text: annualSalaryDisplay()" colspan="1"></td>
-            <td colspan="2"></td>
-        </tr>
-        <tr>
-            <td colspan="5" style="font-weight:bold;">Annual Cost:</td>
-            <td style="font-weight:bold;text-align: right;" data-bind="text: annualCostDisplay()" colspan="1"></td>
-            <td colspan="2"></td>
-        </tr>
-        <tr>
-            <td colspan="5" style="font-weight:bold;">Annual Net Salary:</td>
-            <td style="font-weight:bold;text-align: right;" data-bind="text: annualNetSalaryDisplay()" colspan="1"></td>
-            <td colspan="2"></td>
-        </tr>
-    </tfoot>
-    <tbody data-bind="foreach: employees">
-        <tr data-bind="fadeVisible: !isDependent()">
-            <td colspan="8">Employee</td>
-        </tr>
-        <tr data-bind="fadeVisible: isDependent()">
-            <td colspan="8">Dependent</td>
-        </tr>
+    <h3 class="sectionHeader" style="padding: 5px;">Settings</h3>
 
-        <tr id="rowPerson">
-            <td data-bind="text: personId" align="right"></td>
+    <table>
+        <tr>
+            <td>Discount Letter (starts with)</td>
+            <td>&nbsp;</td>
             <td>
-                <input type="text" data-bind="value: firstName, attr: { id: 'txtFirstName_' + personId()}" />
-            </td>
-            <td>
-                <input type="text" data-bind="value: lastName, attr: { id: 'txtLastName_' + personId()}" />
-            </td>
-            <td data-bind="text: regularPriceDisplay()" align="right"></td>
-            <td data-bind="text: applyDiscount() * 100" align="right"></td>
-            <td data-bind="text: priceWithDiscountDisplay()" align="right"></td>
-            <td data-bind="text: parentPersonId()" align="right"></td>
-            <td align="right">
-                <input type="button" data-bind="attr: { 'data-id': personId }, fadeVisible: parentPersonId() === null, event: {click: $parent.addDependent}" value="Add Dependent" id="btnAddDependent" />
-                <input type="button" data-bind="attr: { 'data-id': personId }, fadeVisible: parentPersonId() != null, event: {click: $parent.removeDependent}" value="Remove Dependent" id="btnRemoveDependent" />
+                <input type="text" id="txtDiscountLetter" value="A" class="form-control" data-parsley-trigger="change" required="true" />
             </td>
         </tr>
-    </tbody>
-</table>
+        <tr>
+            <td>Discount Amount %</td>
+            <td>&nbsp;</td>
+            <td><input class="form-control" type="text" id="txtDiscountAmount" value="10" data-parsley-type="integer" required="true" data-parsley-trigger="change" /></td>
+        </tr>
+        <tr>
+            <td>Employee Salary Per Check</td>
+            <td>&nbsp;&nbsp;$</td>
+            <td><input type="text" id="txtEmployeeSalary" value="2000" class="form-control" data-parsley-trigger="change" required="true" data-parsley-type="integer"/></td>
+        </tr>
+        <tr>
+            <td>Employee Benefits Cost</td>
+            <td>&nbsp;&nbsp;$</td>
+            <td><input class="form-control" type="text" id="txtEmployeeBenefitsCost" value="1000" data-parsley-trigger="change" required="true" data-parsley-type="integer" /></td>
+        </tr>
+        <tr>
+            <td>Dependent Benefits Cost</td>
+            <td>&nbsp;&nbsp;$</td>
+            <td><input type="text" id="txtDependentBenefitsCost" class="form-control" value="500" data-parsley-trigger="change" required="true" data-parsley-type="integer" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2" style="text-align: right;">
+                <input style="width:196px;" class="btn btn-primary pull-right" type="button" id="btnAddEmployee" value="Add Employee" data-bind="event: { click: addEmployee }, visible: employees().length === 0" />
+                @*<i class="fa fa-plus-circle fa-2x" aria-hidden="true">Add</i>*@
+                <input style="width:196px;" class="btn btn-primary pull-right" type="button" id="btnReset" value="New Employee" data-bind="event: { click: newEmployee }, visible: employees().length > 0" />
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    <h3 class="sectionHeader" style="padding: 5px;" data-bind="fadeVisible: employees().length > 0">Benefits Cost Analysis</h3>
+    <table cellpadding="5" id="tblAnalysis" data-bind="fadeVisible: employees().length > 0">
+        <thead>
+            <tr style="border-style: solid; border-width: thin;">
+                <td align="right">PersonId</td>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td align="right">Regular Price</td>
+                <td align="right">Discount %</td>
+                <td align="right">Price with Discount</td>
+                <td align="right">Parent PersonId</td>
+                <td align="right">Action</td>
+
+            </tr>
+        </thead>
+        <tfoot data-bind="fadeVisible: employees().length > 0">
+            <tr>
+                <td colspan="8">
+                    <h3 class="sectionHeader">Summary</h3>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-weight:bold;">Current Paycheck:</td>
+                <td style="font-weight:bold;text-align: right;" data-bind="text: totalPaycheckDisplay()" colspan="1"></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-weight:bold;">Total Cost/Paycheck:</td>
+                <td style="font-weight:bold;text-align: right;" data-bind="text: totalCostDisplay()" colspan="1"></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-weight:bold;">Annual Salary:</td>
+                <td style="font-weight:bold;text-align: right;" data-bind="text: annualSalaryDisplay()" colspan="1"></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-weight:bold;">Annual Cost:</td>
+                <td style="font-weight:bold;text-align: right;" data-bind="text: annualCostDisplay()" colspan="1"></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-weight:bold;">Annual Net Salary:</td>
+                <td style="font-weight:bold;text-align: right;" data-bind="text: annualNetSalaryDisplay()" colspan="1"></td>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+        <tbody data-bind="foreach: employees">
+            <tr data-bind="fadeVisible: !isDependent()">
+                <td colspan="8">Employee</td>
+            </tr>
+            <tr data-bind="fadeVisible: isDependent()">
+                <td colspan="8">Dependent</td>
+            </tr>
+
+            <tr id="rowPerson">
+                <td data-bind="text: personId" align="right"></td>
+                <td>
+                    <input class="form-control" type="text" data-bind="value: firstName, attr: { id: 'txtFirstName_' + personId()}" />
+                </td>
+                <td>
+                    <input class="form-control" type="text" data-bind="value: lastName, attr: { id: 'txtLastName_' + personId()}" />
+                </td>
+                <td data-bind="text: regularPriceDisplay()" align="right"></td>
+                <td data-bind="text: applyDiscount() * 100" align="right"></td>
+                <td data-bind="text: priceWithDiscountDisplay()" align="right"></td>
+                <td data-bind="text: parentPersonId()" align="right"></td>
+                <td align="right">
+                    <input class="btn btn-primary" type="button" data-bind="attr: { 'data-id': personId }, fadeVisible: parentPersonId() === null, event: {click: $parent.addDependent}" value="Add Dependent" id="btnAddDependent" />
+                    <input class="btn btn-danger" type="button" data-bind="attr: { 'data-id': personId }, fadeVisible: parentPersonId() != null, event: {click: $parent.removeDependent}" value="Remove Dependent" id="btnRemoveDependent" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
 
 @section Scripts{
     @Scripts.Render("~/bundles/knockout")
@@ -130,6 +147,24 @@
     <script>
 
         $(function () {
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
 
             ko.bindingHandlers.fadeVisible = {
                 init: function (element, valueAccessor) {
@@ -175,12 +210,19 @@
             var viewModel = new PaylocityViewModel();
             ko.applyBindings(viewModel);
             window.viewModel = viewModel;
-        });
 
-        function formatCurrency(numberToFormat) {
-            numberToFormat = numberToFormat.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-            return numberToFormat;
-        }
+            $('#demo-form').parsley().on('field:validated', function () {
+                var ok = $('.parsley-error').length === 0;
+
+                if (!ok) { toastr.error('Validation error.'); };
+
+                //$('.bs-callout-info').toggleClass('hidden', !ok);
+                //$('.bs-callout-warning').toggleClass('hidden', ok);
+            })
+            .on('form:submit', function () {
+                return false; 
+            });
+        });
 
     </script>
 

@@ -21,7 +21,10 @@
             it('should calculate totalCost without dependent without discount', function () {
                 
                 var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null, "a", "0.10");
-                personViewModel.totalCost().should.equal(1000);
+
+                var paylocityViewModel = new PaylocityViewModel();
+                paylocityViewModel.employees.push(personViewModel);
+                paylocityViewModel.totalCost().should.equal(38.46153846153846);
             });
         });
 
@@ -29,7 +32,10 @@
             it('should calculate totalCost without dependent with discount', function () {
 
                 var personViewModel = new PersonViewModel("Animal", "House", 1000, null, "a", "0.10");
-                personViewModel.totalCost().should.equal(900);
+
+                var paylocityViewModel = new PaylocityViewModel();
+                paylocityViewModel.employees.push(personViewModel);
+                paylocityViewModel.totalCost().should.equal(34.61538461538461);
             });
         });
 
@@ -38,9 +44,12 @@
 
                 var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null, "a", "0.10");
                 var dependentViewModel = new PersonViewModel("Grape", "Ape", 500, personViewModel.personId(), "a", "0.10");
-                personViewModel.dependents.push(dependentViewModel);
 
-                personViewModel.totalCost().should.equal(1500);
+                var paylocityViewModel = new PaylocityViewModel();
+                paylocityViewModel.employees.push(personViewModel);
+                paylocityViewModel.employees.push(dependentViewModel);
+
+                paylocityViewModel.totalCost().should.equal(57.69230769230769);
             });
         });
 
@@ -49,9 +58,12 @@
 
                 var personViewModel = new PersonViewModel("Animal", "House", 1000, null, "a", "0.10");
                 var dependentViewModel = new PersonViewModel("Ape", "Grape", 500, personViewModel.personId(), "a", "0.10");
-                personViewModel.dependents.push(dependentViewModel);
 
-                personViewModel.totalCost().should.equal(1350);
+                var paylocityViewModel = new PaylocityViewModel();
+                paylocityViewModel.employees.push(personViewModel);
+                paylocityViewModel.employees.push(dependentViewModel);
+
+                paylocityViewModel.totalCost().should.equal(51.92307692307692);
             });
         });
 
@@ -60,9 +72,12 @@
 
                 var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null, "a", "0.10");
                 var dependentViewModel = new PersonViewModel("Ape", "Grape", 500, personViewModel.personId(), "a", "0.10");
-                personViewModel.dependents.push(dependentViewModel);
 
-                personViewModel.totalCost().should.equal(1450);
+                var paylocityViewModel = new PaylocityViewModel();
+                paylocityViewModel.employees.push(personViewModel);
+                paylocityViewModel.employees.push(dependentViewModel);
+
+                paylocityViewModel.totalCost().should.equal(55.76923076923077);
             });
         });
 
@@ -72,5 +87,3 @@
     </script>
 
 }
-
-

@@ -40,11 +40,15 @@ namespace Paylocity.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
-                 "~/Content/Site.css"));
+                 "~/Content/Site.css",
+                 "~/Content/toastr.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/paylocityScripts").Include(
+                "~/Scripts/Paylocity.js",
                 "~/Scripts/PaylocityViewModel.js",
-                "~/Scripts/PersonViewModel.js"));
+                "~/Scripts/PersonViewModel.js",
+                "~/Scripts/parsley.min.js",
+                "~/Scripts/toastr.min.js"));
         }
     }
 }
