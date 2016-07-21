@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paylocity.Web", "Paylocity.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paylocity.Web.Tests", "Paylocity.Web.Tests\Paylocity.Web.Tests.csproj", "{E4FAF97F-002A-437A-80B4-1A77C83A3D5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paylocity.Core", "Paylocity.Core\Paylocity.Core.csproj", "{B64D2BDD-61B6-4946-83A8-E20920336E75}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{E4FAF97F-002A-437A-80B4-1A77C83A3D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4FAF97F-002A-437A-80B4-1A77C83A3D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4FAF97F-002A-437A-80B4-1A77C83A3D5B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B64D2BDD-61B6-4946-83A8-E20920336E75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B64D2BDD-61B6-4946-83A8-E20920336E75}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B64D2BDD-61B6-4946-83A8-E20920336E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B64D2BDD-61B6-4946-83A8-E20920336E75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
