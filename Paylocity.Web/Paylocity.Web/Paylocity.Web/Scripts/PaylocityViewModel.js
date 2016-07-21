@@ -120,4 +120,15 @@
         return totalCost;
     });
 
+    self.annualNetSalary = ko.computed(function () {
+        var netSalary = self.annualSalary() - self.annualCost();
+        return Number(netSalary);
+    });
+
+    self.annualNetSalaryDisplay = ko.computed(function () {
+        var netSalary = formatCurrency(self.annualNetSalary());
+        return netSalary;
+    });
+
+
 }
