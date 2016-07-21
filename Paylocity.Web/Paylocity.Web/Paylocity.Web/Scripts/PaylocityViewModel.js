@@ -34,6 +34,11 @@
         self.employees.push(personViewModel);
     };
 
+    self.newEmployee = function () {
+        self.employees.removeAll();
+        self.addEmployee();
+    };
+
     self.addDependent = function () {
         var parentPersonId = this.personId();
 
@@ -89,5 +94,13 @@
     self.annualSalary = ko.computed(function () {
         return self.employeeSalaryPerCheck() * 26;
     });
+
+    //self.totalPaycheck = ko.computed(function () {
+    //    var totalCost = self.employees().reduce(function (total, next) {
+    //        return total + next.priceWithDiscount();
+    //    }, 0);
+
+    //    return Number(totalCost);
+    //});
 
 }

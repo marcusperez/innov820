@@ -5,7 +5,7 @@
     this.personId = ko.observable(new Date().getUTCMilliseconds());
     this.firstName = ko.observable(firstName);
     this.lastName = ko.observable(lastName);
-    this.regularPrice = ko.observable(regularPrice);
+    this.regularPrice = ko.observable(regularPrice).extend({ addCurrencyFormatted: 2 });
     this.discountLetter = ko.observable(discountLetter);
     this.discountAmount = ko.observable(discountAmount);
     this.applyDiscount = ko.computed(function () {
@@ -19,6 +19,11 @@
     }, this);
     this.priceWithDiscount = ko.computed(function () {
         return Number(this.applyDiscount() === 0 ? this.regularPrice() : this.regularPrice() - (this.regularPrice() * (this.applyDiscount() === 0 ? 1 : this.applyDiscount())));
+    }, this);
+    this.priceWithDiscountDisplay = ko.computed(function () {
+        var price = Number(this.applyDiscount() === 0 ? this.regularPrice() : this.regularPrice() - (this.regularPrice() * (this.applyDiscount() === 0 ? 1 : this.applyDiscount())));
+        price = price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        return price;
     }, this);
     this.parentPersonId = ko.observable(parentPersonId);
     this.isDependent = ko.computed(function () {

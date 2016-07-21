@@ -2,10 +2,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="~/Scripts/PaylocityViewModel.js"></script>
-<script src="~/Scripts/PersonViewModel.js"></script>
-
-<br />
 <h3>Settings</h3>
 <table>
     <tr>
@@ -14,9 +10,9 @@
         <td><input type="text" id="txtDiscountLetter" value="A" /></td>
     </tr>
     <tr>
-        <td>Discount Amount</td>
+        <td>Discount Amount %</td>
         <td>&nbsp;</td>
-        <td><input type="text" id="txtDiscountAmount" value="10" />%</td>
+        <td><input type="text" id="txtDiscountAmount" value="10" /></td>
     </tr>
     <tr>
         <td>Employee Salary Per Check</td>
@@ -33,15 +29,21 @@
         <td>$</td>
         <td><input type="text" id="txtDependentBenefitsCost" value="500" /></td>
     </tr>
+    <tr>
+        <td colspan="3" style="text-align: right;">
+            <input type="button" id="btnAddEmployee" value="Add Employee" data-bind="event: { click: addEmployee }, visible: employees().length === 0" />
+            @*<i class="fa fa-plus-circle fa-2x" aria-hidden="true">Add</i>*@
+            <input type="button" id="btnReset" value="New Employee" data-bind="event: { click: newEmployee }, visible: employees().length > 0" />
+        </td>
+    </tr>
 </table>
 
 <br />
 
-<table style="border-style: solid; border-width: thin;" cellpadding="5" id="tblAnalysis">
+<table cellpadding="5" id="tblAnalysis" data-bind="fadeVisible: employees().length > 0">
     <thead>
         <tr>
-            <td colspan="2"><h3>Benefits Cost Analysis</h3></td>
-            <td colspan="6" align="right"><input type="button" id="btnAddEmployee" value="Add Employee" data-bind="event: { click: addEmployee }" /></td>
+            <td colspan="8"><h3>Benefits Cost Analysis</h3></td>
         </tr>
         <tr style="border-style: solid; border-width: thin;">
             <td align="right">PersonId</td>
@@ -55,7 +57,7 @@
 
         </tr>
     </thead>
-    <tfoot data-bind="visible: employees().length > 0">
+    <tfoot data-bind="fadeVisible: employees().length > 0">
         <tr>
             <td colspan="8" style="font-weight:bold;background-color:lightblue">Summary</td>
         </tr>
@@ -76,10 +78,10 @@
         </tr>
     </tfoot>
     <tbody data-bind="foreach: employees">
-        <tr data-bind="visible: !isDependent()">
+        <tr data-bind="fadeVisible: !isDependent()">
             <td colspan="8">Employee</td>
         </tr>
-        <tr data-bind="visible: isDependent()">
+        <tr data-bind="fadeVisible: isDependent()">
             <td colspan="8">Dependent</td>
         </tr>
 
@@ -91,13 +93,13 @@
             <td>
                 <input type="text" data-bind="value: lastName, attr: { id: 'txtLastName_' + personId()}" />
             </td>
-            <td data-bind="text: regularPrice()" align="right"></td>
+            <td data-bind="text: regularPrice.formatted" align="right"></td>
             <td data-bind="text: applyDiscount() * 100" align="right"></td>
-            <td data-bind="text: priceWithDiscount()" align="right"></td>
+            <td data-bind="text: priceWithDiscountDisplay()" align="right"></td>
             <td data-bind="text: parentPersonId()" align="right"></td>
             <td align="right">
-                <input type="button" data-bind="attr: { 'data-id': personId }, visible: parentPersonId() === null, event: {click: $parent.addDependent}" value="Add Dependent" id="btnAddDependent" />
-                <input type="button" data-bind="attr: { 'data-id': personId }, visible: parentPersonId() != null, event: {click: $parent.removeDependent}" value="Remove Dependent" id="btnRemoveDependent" />
+                <input type="button" data-bind="attr: { 'data-id': personId }, fadeVisible: parentPersonId() === null, event: {click: $parent.addDependent}" value="Add Dependent" id="btnAddDependent" />
+                <input type="button" data-bind="attr: { 'data-id': personId }, fadeVisible: parentPersonId() != null, event: {click: $parent.removeDependent}" value="Remove Dependent" id="btnRemoveDependent" />
             </td>
         </tr>
     </tbody>
@@ -110,6 +112,48 @@
     <script>
 
         $(function () {
+
+            ko.bindingHandlers.fadeVisible = {
+                init: function (element, valueAccessor) {
+                    // Initially set the element to be instantly visible/hidden depending on the value
+                    var value = valueAccessor();
+                    $(element).toggle(ko.unwrap(value)); // Use "unwrapObservable" so we can handle values that may or may not be observable
+                },
+                update: function (element, valueAccessor) {
+                    // Whenever the value subsequently changes, slowly fade the element in or out
+                    var value = valueAccessor();
+                    ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
+                }
+            };
+
+            //Add formatted observable to the target observable.
+            ko.extenders.addCurrencyFormatted = function (target, decimals) {
+                target.formatted = ko.computed({
+                    read: function () {
+                        var val = target();
+
+                        //Insert 1000 space.
+                        //var formattedValue = ('R ' + val).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                        var formattedValue = (val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        return formattedValue;
+                    },
+                    write: function (newValue) {
+                        var current = target();
+                        var valueToWrite = formatToNumber(newValue, decimals);
+
+                        //only write if it changed
+                        if (valueToWrite !== current) {
+                            target(valueToWrite);
+                        } else {
+                            if (newValue !== current) {
+                                target.notifySubscribers(valueToWrite);
+                            }
+                        }
+                    }
+                });
+                return target;
+            };
+
             var viewModel = new PaylocityViewModel();
             ko.applyBindings(viewModel);
             window.viewModel = viewModel;

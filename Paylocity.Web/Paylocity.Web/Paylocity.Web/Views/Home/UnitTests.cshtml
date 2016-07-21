@@ -20,7 +20,7 @@
         describe('Person', function () {
             it('should calculate totalCost without dependent without discount', function () {
                 
-                var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null, "a", "10");
+                var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null, "a", "0.10");
                 personViewModel.totalCost().should.equal(1000);
             });
         });
@@ -28,7 +28,7 @@
         describe('Person', function () {
             it('should calculate totalCost without dependent with discount', function () {
 
-                var personViewModel = new PersonViewModel("Animal", "House", 1000, null, "a", "10");
+                var personViewModel = new PersonViewModel("Animal", "House", 1000, null, "a", "0.10");
                 personViewModel.totalCost().should.equal(900);
             });
         });
@@ -36,8 +36,8 @@
         describe('Person', function () {
             it('should calculate totalCost with dependent without discount', function () {
 
-                var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null, "a", "10");
-                var dependentViewModel = new PersonViewModel("Grape", "Ape", 500, personViewModel.personId(), "a", "10");
+                var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null, "a", "0.10");
+                var dependentViewModel = new PersonViewModel("Grape", "Ape", 500, personViewModel.personId(), "a", "0.10");
                 personViewModel.dependents.push(dependentViewModel);
 
                 personViewModel.totalCost().should.equal(1500);
@@ -47,8 +47,8 @@
         describe('Person', function () {
             it('should calculate totalCost with dependent with discount (Both)', function () {
 
-                var personViewModel = new PersonViewModel("Animal", "House", 1000, null, "a", "10");
-                var dependentViewModel = new PersonViewModel("Ape", "Grape", 500, personViewModel.personId(), "a", "10");
+                var personViewModel = new PersonViewModel("Animal", "House", 1000, null, "a", "0.10");
+                var dependentViewModel = new PersonViewModel("Ape", "Grape", 500, personViewModel.personId(), "a", "0.10");
                 personViewModel.dependents.push(dependentViewModel);
 
                 personViewModel.totalCost().should.equal(1350);
@@ -58,8 +58,8 @@
         describe('Person', function () {
             it('should calculate totalCost with dependent with discount (Dependent)', function () {
 
-                var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null, "a", "10");
-                var dependentViewModel = new PersonViewModel("Ape", "Grape", 500, personViewModel.personId(), "a", "10");
+                var personViewModel = new PersonViewModel("Marcus", "Perez", 1000, null, "a", "0.10");
+                var dependentViewModel = new PersonViewModel("Ape", "Grape", 500, personViewModel.personId(), "a", "0.10");
                 personViewModel.dependents.push(dependentViewModel);
 
                 personViewModel.totalCost().should.equal(1450);
