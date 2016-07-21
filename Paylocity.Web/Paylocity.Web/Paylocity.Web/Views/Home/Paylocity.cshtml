@@ -2,7 +2,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Settings</h3>
+<style>
+    .sectionHeader {
+        background-color:lightblue;
+        padding: 5px;
+    }
+</style>
+
+<h3 class="sectionHeader" style="padding: 5px;">Settings</h3>
 <table>
     <tr>
         <td>Discount Letter (starts with)</td>
@@ -39,12 +46,9 @@
 </table>
 
 <br />
-
+<h3 class="sectionHeader" style="padding: 5px;" data-bind="fadeVisible: employees().length > 0">Benefits Cost Analysis</h3>
 <table cellpadding="5" id="tblAnalysis" data-bind="fadeVisible: employees().length > 0">
     <thead>
-        <tr>
-            <td colspan="8"><h3>Benefits Cost Analysis</h3></td>
-        </tr>
         <tr style="border-style: solid; border-width: thin;">
             <td align="right">PersonId</td>
             <td>First Name</td>
@@ -59,21 +63,26 @@
     </thead>
     <tfoot data-bind="fadeVisible: employees().length > 0">
         <tr>
-            <td colspan="8" style="font-weight:bold;background-color:lightblue">Summary</td>
+            <td colspan="8" style="font-weight:bold;" class="sectionHeader">Summary</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="font-weight:bold;">Current Paycheck:</td>
+            <td style="font-weight:bold;text-align: right;" data-bind="text: totalPaycheckDisplay()" colspan="1"></td>
+            <td colspan="2"></td>
         </tr>
         <tr>
             <td colspan="5" style="font-weight:bold;">Annual Salary:</td>
-            <td style="font-weight:bold;text-align: right;" data-bind="text: annualSalary()" colspan="1"></td>
+            <td style="font-weight:bold;text-align: right;" data-bind="text: annualSalaryDisplay()" colspan="1"></td>
             <td colspan="2"></td>
         </tr>
         <tr>
             <td colspan="5" style="font-weight:bold;">Total Cost/Paycheck:</td>
-            <td style="font-weight:bold;text-align: right;" data-bind="text: totalCost()" colspan="1"></td>
+            <td style="font-weight:bold;text-align: right;" data-bind="text: totalCostDisplay()" colspan="1"></td>
             <td colspan="2"></td>
         </tr>
         <tr>
             <td colspan="5" style="font-weight:bold;">Annual Cost:</td>
-            <td style="font-weight:bold;text-align: right;" data-bind="text: annualCost()" colspan="1"></td>
+            <td style="font-weight:bold;text-align: right;" data-bind="text: annualCostDisplay()" colspan="1"></td>
             <td colspan="2"></td>
         </tr>
     </tfoot>
@@ -93,7 +102,7 @@
             <td>
                 <input type="text" data-bind="value: lastName, attr: { id: 'txtLastName_' + personId()}" />
             </td>
-            <td data-bind="text: regularPrice.formatted" align="right"></td>
+            <td data-bind="text: regularPriceDisplay()" align="right"></td>
             <td data-bind="text: applyDiscount() * 100" align="right"></td>
             <td data-bind="text: priceWithDiscountDisplay()" align="right"></td>
             <td data-bind="text: parentPersonId()" align="right"></td>
@@ -158,6 +167,11 @@
             ko.applyBindings(viewModel);
             window.viewModel = viewModel;
         });
+
+        function formatCurrency(numberToFormat) {
+            numberToFormat = numberToFormat.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+            return numberToFormat;
+        }
 
     </script>
 

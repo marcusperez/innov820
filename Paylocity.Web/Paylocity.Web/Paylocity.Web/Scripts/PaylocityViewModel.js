@@ -74,6 +74,11 @@
         return Number(totalCost);
     });
 
+    self.totalCostDisplay = ko.computed(function () {
+        var totalCost = formatCurrency(self.totalCost());
+        return totalCost;
+    });
+
     self.annualCost = ko.computed(function () {
         var totalCost = self.employees().reduce(function (total, next) {
             return total + next.priceWithDiscount();
@@ -81,6 +86,11 @@
 
         totalCost = totalCost * 26;
         return Number(totalCost);
+    });
+
+    self.annualCostDisplay = ko.computed(function () {
+        var annualCost = formatCurrency(self.annualCost());
+        return annualCost;
     });
 
     self.annualCostPercentage = ko.computed(function () {
@@ -95,12 +105,19 @@
         return self.employeeSalaryPerCheck() * 26;
     });
 
-    //self.totalPaycheck = ko.computed(function () {
-    //    var totalCost = self.employees().reduce(function (total, next) {
-    //        return total + next.priceWithDiscount();
-    //    }, 0);
+    self.annualSalaryDisplay = ko.computed(function () {
+        var annualSalary = formatCurrency(self.annualSalary());
+        return annualSalary;
+    });
 
-    //    return Number(totalCost);
-    //});
+    self.totalPaycheck = ko.computed(function () {
+        var totalCost = self.employeeSalaryPerCheck();
+        return Number(totalCost);
+    });
+
+    self.totalPaycheckDisplay = ko.computed(function () {
+        var totalCost = formatCurrency(self.totalPaycheck());
+        return totalCost;
+    });
 
 }
