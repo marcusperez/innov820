@@ -12,7 +12,7 @@ namespace Paylocity.Web.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Instructions");
         }
 
         [AllowAnonymous]
