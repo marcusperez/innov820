@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+
+  "name": "k-thx-bye",
+  "short_name": "k-thx-bye",
+  "description": "This extension will help you save time using various online dating web sites.",
+  "version": "1.1",
+
+  "browser_action": {
+   "default_icon": "icon_128.png",
+   "default_popup": "popup.html"
+  },
+  "icons": {
+    "128": "icon_128.png"
+  },
+  "permissions": [
+  "activeTab", "storage", "notifications"
+  ],
+  "web_accessible_resources": [
+    "icon_128.png"
+  ],
+  "background": {
+    "scripts": ["popup.js"]
+   },
+   "content_scripts": [ {
+    "js": [ "jquery-2.2.3.min.js", "handlebars-v4.0.5.js", "dtf.js" ],
+    "matches": [ "*://*.pof.com/viewmatches.aspx", "*://*.pof.com/meetme.aspx" ]
+  }]   
+}
+
+

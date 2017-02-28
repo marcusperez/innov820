@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>k-thx-bye</title>
+    <script src='jquery-2.2.3.min.js'></script>
+	<script src='handlebars-v4.0.5.js'></script>
+	<script src="dtf.js"></script>
+    <script src="popup.js"></script>
+	<!-- <link href="toastr.min.css" rel="stylesheet"/>
+	<script src="toastr.min.js"></script> -->
+  </head>
+  <body style="width:200px;">
+    <h1>k-thx-bye</h1>
+	<input type="checkbox" id="chkAutoClean" value="false" /> Auto-clean page
+	<br/><br/>
+    <button id="btnProfileOptions">Hide profiles</button>
+	<br/><br/>
+	<button id="btnCleanPage">Clean up</button>
+	<button id="btnTest">Test hb.js</button>
+  </body>
+  
+  <script id="entry-template" type="text/x-handlebars-template">
+  <div class="entry">
+    <h1>{{title}}</h1>
+    <div class="body">
+      {{body}}
+    </div>
+  </div>
+</script>
+</html>
